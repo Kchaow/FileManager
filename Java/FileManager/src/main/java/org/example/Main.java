@@ -62,7 +62,6 @@ public class Main {
             System.out.println(convertToUTF8String(String.format("Файл %s не существует", fileName)));
             fileName = fileNameInput(scanner);
         }
-        List.of(1, 2, 3).forEach(System.out::println);
         Path filePath = path.resolve(fileName);
         System.out.println(convertToUTF8String("Выберите действие"));
         System.out.println(convertToUTF8String("Записать в файл строку (1)"));
@@ -196,11 +195,13 @@ public class Main {
             return;
         }
         List<Person> personList;
-        try {
-            personList = objectMapper.readValue(filePath.toFile(), new TypeReference<>(){});
-        } catch (IOException e) {
-            System.out.println(convertToUTF8String("Файл имеет неверную структуру"));
-            return;
+        if (filePath.toFile().length() > 0) {
+            try {
+                personList = objectMapper.readValue(filePath.toFile(), new TypeReference<>(){});
+            } catch (IOException e) {
+                System.out.println(convertToUTF8String("Файл имеет неверную структуру"));
+                return;
+            }
         }
         String firstName = input("Имя: ", scanner);
         String lastName = input("Фамилия: ", scanner);
